@@ -7,6 +7,9 @@ import RootLayout from "./layouts/RootLayout.jsx";
 import Home from "./components/Home/Home.jsx";
 import AllProducts from "./components/AllProducts/AllProducts.jsx";
 import Register from "./components/Register/Register.jsx";
+import AuthProvider from "./contexts/AuthProvider.jsx";
+import MyProducts from "./components/MyProducts/MyProducts.jsx";
+import MyBids from "./components/MyBids/MyBids.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +21,20 @@ const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: 'allProducts',
-        Component: AllProducts
+        path: "allProducts",
+        Component: AllProducts,
       },
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "myProducts",
+        element: <MyProducts></MyProducts>,
+      },
+      {
+        path: "myBids",
+        Component: <MyBids></MyBids>,
       },
     ],
   },
@@ -31,6 +42,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />,
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );
