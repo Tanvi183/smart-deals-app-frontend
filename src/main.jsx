@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "myBids",
-        Component: <MyBids></MyBids>,
+        element: <MyBids></MyBids>,
       },
       {
         path: 'productDetails/:id',
