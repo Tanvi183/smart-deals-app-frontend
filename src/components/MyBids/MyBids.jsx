@@ -1,5 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import { AtuhContext } from "../../contexts/AuthContext";
+import Swal from "sweetalert2";
 
 const MyBids = () => {
   const { user } = use(AtuhContext);
@@ -15,6 +16,36 @@ const MyBids = () => {
         });
     }
   }, [user?.email]);
+
+  const handleDeleteBid = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/bids/${_id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your bid has been deleted.",
+                icon: "success",
+              });
+              const remainingBids = bids.filter(bid => bid._id !== _id);
+              setBids(remainingBids);
+            }
+          });
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">
@@ -41,7 +72,7 @@ const MyBids = () => {
             <tbody>
               {bids.map((bid, index) => (
                 <tr
-                  key={bid.id}
+                  key={bid._id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition"
                 >
                   <td className="py-4 px-5">{index + 1}</td>
@@ -87,7 +118,10 @@ const MyBids = () => {
 
                   {/* Actions */}
                   <td className="py-4 px-5">
-                    <button className="text-red-500 border border-red-500 text-xs font-semibold px-3 py-1 rounded-md hover:bg-red-500 hover:text-white transition">
+                    <button
+                      onClick={() => handleDeleteBid(bid._id)}
+                      className="text-red-500 border border-red-500 text-xs font-semibold px-3 py-1 rounded-md hover:bg-red-500 hover:text-white transition"
+                    >
                       Remove Bid
                     </button>
                   </td>
