@@ -6,16 +6,22 @@ const MyBids = () => {
   const { user } = use(AtuhContext);
   const [bids, setBids] = useState([]);
 
+  // console.log("token", user.accessToken);
+
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/bids?email=${user.email}`)
+      fetch(`http://localhost:3000/bids?email=${user.email}`, {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           //   console.log(data);
           setBids(data);
         });
     }
-  }, [user?.email]);
+  }, [user]);
 
   const handleDeleteBid = (_id) => {
     Swal.fire({
@@ -39,7 +45,7 @@ const MyBids = () => {
                 text: "Your bid has been deleted.",
                 icon: "success",
               });
-              const remainingBids = bids.filter(bid => bid._id !== _id);
+              const remainingBids = bids.filter((bid) => bid._id !== _id);
               setBids(remainingBids);
             }
           });

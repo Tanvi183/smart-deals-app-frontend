@@ -32,17 +32,30 @@ const router = createBrowserRouter([
       },
       {
         path: "myProducts",
-        element: <MyProducts></MyProducts>,
+        element: (
+          <PrivateRoute>
+            <MyProducts></MyProducts>
+          </PrivateRoute>
+        ),
       },
       {
         path: "myBids",
-        element: <MyBids></MyBids>,
+        element: (
+          <PrivateRoute>
+            <MyBids></MyBids>
+          </PrivateRoute>
+        ),
       },
       {
-        path: 'productDetails/:id',
-        loader: ({params}) => fetch(`http://localhost:3000/products/${params.id}`),
-        Component: ProductDetails,
-      }
+        path: "productDetails/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/products/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <ProductDetails></ProductDetails>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

@@ -21,12 +21,16 @@ const ProductDetails = () => {
 
   // bids loads from databse
   useEffect(() => {
-    fetch(`http://localhost:3000/product/bids/${productId}`)
+    fetch(`http://localhost:3000/product/bids/${productId}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setBids(data);
       });
-  }, [productId]);
+  }, [productId, user]);
 
   const handleBidModalOpen = () => {
     bidModalRef.current.showModal();
@@ -265,10 +269,7 @@ const ProductDetails = () => {
                       <div className="avatar">
                         <div className="mask mask-squircle h-12 w-12">
                           {bid.buyer_image ? (
-                            <img
-                              src={bid.buyer_image}
-                              alt={bid.buyer_name}
-                            />
+                            <img src={bid.buyer_image} alt={bid.buyer_name} />
                           ) : (
                             <img
                               src="https://img.daisyui.com/images/profile/demo/2@94.webp"
