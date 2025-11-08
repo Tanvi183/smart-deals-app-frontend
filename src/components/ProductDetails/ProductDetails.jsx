@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { AtuhContext } from "../../contexts/AuthContext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const ProductDetails = () => {
   const {
@@ -21,16 +22,29 @@ const ProductDetails = () => {
 
   // bids loads from databse
   useEffect(() => {
-    fetch(`http://localhost:3000/product/bids/${productId}`, {
-      headers: {
-        authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => res.json())
+    axios
+      .get(`http://localhost:3000/product/bids/${productId}`, {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      })
       .then((data) => {
-        setBids(data);
+        setBids(data.data);
+        console.log("loading with axios", data);
       });
   }, [productId, user]);
+
+  // useEffect(() => {
+  //   fetch(`http://localhost:3000/product/bids/${productId}`, {
+  //     headers: {
+  //       authorization: `Bearer ${user.accessToken}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setBids(data);
+  //     });
+  // }, [productId, user]);
 
   const handleBidModalOpen = () => {
     bidModalRef.current.showModal();
@@ -262,7 +276,7 @@ const ProductDetails = () => {
             <tbody>
               {/* row 1 */}
               {bids.map((bid, index) => (
-                <tr>
+                <tr key={bid._id}>
                   <th>{index + 1} </th>
                   <td>
                     <div className="flex items-center gap-3">

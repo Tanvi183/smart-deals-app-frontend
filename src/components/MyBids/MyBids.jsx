@@ -1,9 +1,10 @@
-import React, { use, useEffect, useState } from "react";
-import { AtuhContext } from "../../contexts/AuthContext";
+import React, { useEffect, useState } from "react";
+// import { AtuhContext } from "../../contexts/AuthContext";
 import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
 
 const MyBids = () => {
-  const { user } = use(AtuhContext);
+  const { user } = useAuth();
   const [bids, setBids] = useState([]);
 
   // console.log("token", user.accessToken);
