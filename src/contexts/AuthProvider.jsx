@@ -73,6 +73,7 @@ const AuthProvider = ({ children }) => {
     signOutUser,
     user,
     loading,
+    setLoading,
   };
   return <AtuhContext value={authInfo}>{children}</AtuhContext>;
 };
